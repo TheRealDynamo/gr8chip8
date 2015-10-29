@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdint>
 
-void gr8chip8::emulateCycle(pc) {
+int main(int argc, char* argv[]) {
 
 }
