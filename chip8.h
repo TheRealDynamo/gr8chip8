@@ -9,8 +9,6 @@
 
 class Chip8 {
 public:
-    float version = 0.1;
-
     void emulateCycle();
 
 private:
