@@ -2,7 +2,7 @@
 #define CHIP8_H
 
 #define MEM_SIZE 4096
-#define REG_SIZE 0xF // 0xF is 15 so 0 to 15
+#define REG_SIZE 0xF // 0xF is 15 so 16 registers
 #define STACK_SIZE 0xF
 #define KEY_PAD_SIZE 0xF
 

@@ -6,7 +6,7 @@ void Chip8::init() {
 
 }
 
-// Take an opcode and run it
+// Take an opcode and run it (Emul8)
 void Chip8::emulateCycle() {
 
 }
