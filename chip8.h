@@ -1,5 +1,6 @@
 #ifndef CHIP8_H
 #define CHIP8_H
+#include <cstdint>
 
 #define MEM_SIZE 0xFFF // 4096(4kb) for memory
 #define REG_SIZE 0xF // 0xF is 15 so 16 registers
@@ -13,11 +14,19 @@ public:
     void emulateCycle();
 
 private:
+    class Chip8Stack {
+    public:
+        uint8_t stk[STACK_SIZE];
+        int top;
+
+        void push();
+        void pop();
+    };
     // Stores current opcode
     uint16_t opcode;
     // Index register 0x000 to 0xFFF
     uint16_t iReg;
-    // Program register 0x000 to 0xFFF
+    // Program counter 0x000 to 0xFFF
     uint16_t progCount;
     // Chip8 memory
     uint8_t memory[MEM_SIZE];
