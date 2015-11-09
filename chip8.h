@@ -9,6 +9,7 @@
 
 class Chip8 {
 public:
+    void loadRom();
     void emulateCycle();
 
 private:
