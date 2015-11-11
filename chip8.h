@@ -2,15 +2,48 @@
 #define CHIP8_H
 #include <cstdint>
 
-#define MEM_SIZE 0xFFF // 4096(4kb) for memory
-#define REG_SIZE 0xF // 0xF is 15 so 16 registers
-#define STACK_SIZE 0xF
-#define KEY_PAD_SIZE 0xF
+#define MEM_SIZE 4096 // 4096(4kb) for memory
+#define REG_SIZE 16 // 16 registers
+#define STACK_SIZE 16
+#define KEY_PAD_SIZE 16
 
+class Stack {
+public:
+
+    uint16_t stack[STACK_SIZE];
+    uint8_t top;
+
+    uint16_t topValue() {
+        return sp;
+    }
+
+    void push(uint16_t value) {
+        stack[top] = value;
+        sp = stack[top];
+        ++top;
+    }
+
+    void pop() {
+        --top;
+        stack[top] = 0;
+        sp = stack[top - 1];
+    }
+
+    Stack()
+        : top(0)
+        , sp(0) {
+            for (int i = 0; i <= STACK_SIZE; ++i)
+                stack[i] = 0;
+        }
+
+private:
+    uint16_t sp;
+
+};
 
 class Chip8 {
 public:
-    void loadRom();
+    void loadRom(const std::string &fileName);
     void emulateCycle();
 
 private:
@@ -22,6 +55,7 @@ private:
         void push();
         void pop();
     };
+
     // Stores current opcode
     uint16_t opcode;
     // Index register 0x000 to 0xFFF

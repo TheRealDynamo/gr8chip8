@@ -2,7 +2,10 @@
 #include <fstream>
 #include "chip8.h"
 
-#define FONT_SIZE 0x4F // 0x4f is 79
+#define FONT_SIZE 80 // Size of Chip8 font
+
+
+
 
 // Font set
 uint8_t chip8FontSet[FONT_SIZE] =
@@ -51,7 +54,7 @@ void Chip8::loadRom(const std::string &fileName) {
 
     gameFile.close();
 }
-
+/*
 // Take an opcode and run it (Emul8)
 void Chip8::emulateCycle() {
     opcode = fetchOpcode(progCount);
@@ -60,4 +63,4 @@ void Chip8::emulateCycle() {
 uint16_t fetchOpcode(uint16_t programCounter) {
 
 }
-
+*/
