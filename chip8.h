@@ -6,6 +6,7 @@
 #define REG_SIZE 16 // 16 registers
 #define STACK_SIZE 16
 #define KEY_PAD_SIZE 16
+#define FONT_SIZE 80 // Size of Chip8 fontset
 
 class Stack {
 public:
@@ -43,19 +44,16 @@ private:
 
 class Chip8 {
 public:
-    void loadRom(const std::string &fileName);
+
+    void loadRom(const std::string& path);
     void emulateCycle();
 
-private:
-    class Chip8Stack {
-    public:
-        uint8_t stk[STACK_SIZE];
-        int top;
-
-        void push();
-        void pop();
-    };
-
+    Chip8()
+        : progCount(0x200) // Game memory starts at 0x200
+        , opcode(0) {
+            init();
+        }
+//private:
     // Stores current opcode
     uint16_t opcode;
     // Index register 0x000 to 0xFFF

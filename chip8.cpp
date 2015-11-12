@@ -2,11 +2,6 @@
 #include <fstream>
 #include "chip8.h"
 
-#define FONT_SIZE 80 // Size of Chip8 font
-
-
-
-
 // Font set
 uint8_t chip8FontSet[FONT_SIZE] =
         {
@@ -28,31 +23,43 @@ uint8_t chip8FontSet[FONT_SIZE] =
             0xF0, 0x80, 0xF0, 0x80, 0x80  // F
         };
 
-// Implement stack
-void Chip8::Chip8Stack::pop() {
-
-}
-
 // Initialize chip8
 void Chip8::init() {
-    progCount = 0x200; // Set to ROM in memroy
+    for (int i = 0; i < MEM_SIZE; ++i)
+        memory[i] = 0;
 
     // Load font set
-    for (int i = 0; i <= FONT_SIZE; ++i)
+    for (int i = 0; i < FONT_SIZE; ++i)
         memory[i] = chip8FontSet[i];
+
+    loadRom("C:\\Users\\Curley\\Desktop\\gr8chip8\\tetris.ch8");
 }
 
-void Chip8::loadRom(const std::string &fileName) {
-    // Initialize before loading
-    init();
+void Chip8::loadRom(const std::string& fileName) {
+    size_t gameSize;
 
     // Open file for reading in binary
     std::ifstream gameFile;
     gameFile.open(fileName, std::ios::in | std::ios::binary);
+    if (gameFile.is_open()) {
+        // Load into memory
+        gameFile.seekg(0, std::ios::end);
+        gameSize = gameFile.tellg();
 
-    // Load into memory
+        if (gameSize > 0xFFF - 0x200) // Size of game memory
+            std::cerr << "Error: File is too large\n";
 
-    gameFile.close();
+        char* temp = (char*) &memory[0x200];
+
+        gameFile.seekg(0, std::ios::beg);
+        gameFile.read(temp, gameSize);
+
+        gameFile.close();
+    } else {
+        std::cerr << "Error: File could not be opened\n";
+    }
+
+
 }
 /*
 // Take an opcode and run it (Emul8)
