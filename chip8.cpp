@@ -61,13 +61,94 @@ void Chip8::loadRom(const std::string& fileName) {
 
 
 }
-/*
 // Take an opcode and run it (Emul8)
 void Chip8::emulateCycle() {
-    opcode = fetchOpcode(progCount);
+    opcode = memory[progCount] << 8 | memory[progCount + 1];
+    
+    switch(opcode & 0xF000) {
+        case (0x0):
+                switch (opcode & 0x00FF) {
+                        case 0x00E0:
+                                // 00EO CLS
+                                break;
+                        
+                        case 0x00EE:
+                                // 00EE RET
+                                break;
+                        
+                        default: 
+                                // 0nnn SYS addr
+                                break;
+                }
+                break;
+                
+        case 0x1000: 
+                // 1nnn JP addr
+                break;
+                
+        case 0x3000:
+                // 3xkk SE Vx, byte
+                break;
+                
+        case 0x4000:
+                // 4xkk SNE Vx, byte
+                break;
+                
+        case 0x5000:
+                // 5xy0 SE Vx, Vy
+                break;
+                
+        case 0x6000:
+                // 6xkk LD Vx, byte
+                break;
+                
+        case 0x7000:
+                // 7xkk ADD Vx, byte
+                break;
+                
+        case 0x8000:
+                switch (opcode & 0x000F) {
+                        case 0x0000:
+                                // 
+                                break;
+                        
+                        case 0x0001:
+                                // 
+                                break;
+                        
+                        case 0x0002:
+                                // 
+                                break;
+                        
+                        case 0x0003:
+                                // 
+                                break;
+                        
+                        case 0x0004:
+                                // 
+                                break;
+                        
+                        case 0x0005:
+                                // 
+                                break;
+                        
+                        case 0x0006:
+                                // 
+                                break;
+                        
+                        case 0x0007:
+                                // 
+                                break;
+                        
+                        case 0x000E:
+                                // 
+                                break;
+                        
+                }
+                break;
+                
+        default:
+                std::cerr << "Error opcode not found\n";
+                std::cerr << "OPCODE: " << std::hex << opcode << std::dec << "\n";
+    }
 }
-
-uint16_t fetchOpcode(uint16_t programCounter) {
-
-}
-*/
