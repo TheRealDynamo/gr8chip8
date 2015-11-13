@@ -14,31 +14,36 @@ public:
     uint16_t stack[STACK_SIZE];
     uint8_t top;
 
-    uint16_t topValue() {
+    /* uint16_t topValue() {
         return sp;
-    }
+    } */
 
     void push(uint16_t value) {
         stack[top] = value;
-        sp = stack[top];
+        //sp = stack[top];
+        if (top != 0)
+            ++sp;
         ++top;
     }
 
     void pop() {
         --top;
         stack[top] = 0;
-        sp = stack[top - 1];
+        //sp = stack[top - 1];
+        --sp;
     }
 
     Stack()
-        : top(0)
-        , sp(0) {
-            for (int i = 0; i <= STACK_SIZE; ++i)
+        : top(0) {
+            for (int i = 0; i <= STACK_SIZE; ++i) {
                 stack[i] = 0;
+                sp = stack;
+            }
+
         }
 
 private:
-    uint16_t sp;
+    uint16_t* sp;
 
 };
 
