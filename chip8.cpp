@@ -152,28 +152,34 @@ void Chip8::emulateCycle() {
                 
         case 0x6000:
             // 6xkk LD Vx, byte
+            V_[x] = kk;
             break;
                 
         case 0x7000:
             // 7xkk ADD Vx, byte
+            V_[x] += kk;
             break;
                 
         case 0x8000:
             switch (opcode_ & 0x000F) {
                 case 0x0000:
                     // 8xy0 LD Vx, Vy
+                    V_[x] = V_[y];
                     break;
 
                 case 0x0001:
                     // 8xy1 OR Vx, Vy
+                    V_[x] = V_[x] | V_[y];
                     break;
 
                 case 0x0002:
                     // 8xy2 AND Vx, Vy
+                    V_[x] = V_[x] & V_[y];
                     break;
 
                 case 0x0003:
                     // 8xy3 XOR Vx, Vy
+                    V_[x] = V_[x] ^ V_[y];
                     break;
 
                 case 0x0004:
