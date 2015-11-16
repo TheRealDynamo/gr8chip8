@@ -88,56 +88,57 @@ void Chip8::emulateCycle() {
      * x and y are values the correspond with V
      * Ex: x = 1, so Vx is V1
      * kk is a value inside opcode
-     * a single n is a nibble
-     * */
+     * a single n is a nibble */
+
+    uint16_t nnn = opcode_ & 0x0FFF;
+    uint16_t x = (opcode_ & 0x0F00) >> 8;
+    uint16_t y = (opcode_ & 0x00F0) >> 4;
+    uint16_t kk = opcode_ & 0x00FF;
+    uint16_t n = opcode_ & 0x000F;
+
     switch(opcode_ & 0xF000) {
-        case 0x0000: {
+        case 0x0000:
             switch (opcode_ & 0x00FF) {
-                case 0x00E0: {
+                case 0x00E0:
                     // 00EO CLS
                     break;
-                }
 
-                case 0x00EE: {
+                case 0x00EE:
                     // 00EE RET
                     pc_ = stack_.top();
                     stack_.pop();
                     break;
-                }
 
-                default: {
+                default:
                     std::cerr << "Error: opcode not found\n";
                     std::cerr << "OPCODE: " << std::hex << opcode_ << std::dec << "\n";
-                }
-            }
+
             break;
         }
                 
-        case 0x1000: {
+        case 0x1000:
             // 1nnn JP addr
-            uint16_t nnn = opcode_ & 0x0FFF;
+            nnn = opcode_ & 0x0FFF;
             pc_ = nnn;
             pc_ -= 2;
             break;
-        }
 
-        case 0x2000: {
+
+        case 0x2000:
             // 2nnn CALL addr
-            uint16_t nnn = opcode_ & 0x0FFF;
+            nnn = opcode_ & 0x0FFF;
             stack_.push(pc_);
             pc_ = nnn;
             pc_ -= 2;
             break;
-        }
+
                 
-        case 0x3000: {
+        case 0x3000:
             // 3xkk SE Vx, byte
-            uint16_t x = (opcode_ & 0x0F00) >> 8;
-            uint16_t kk = opcode_ & 0x00FF;
             if (V_[x] == kk)
                 pc_ += 2;
             break;
-        }
+
                 
         case 0x4000:
             // 4xkk SNE Vx, byte
