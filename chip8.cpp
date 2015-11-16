@@ -118,7 +118,6 @@ void Chip8::emulateCycle() {
                 
         case 0x1000:
             // 1nnn JP addr
-            nnn = opcode_ & 0x0FFF;
             pc_ = nnn;
             pc_ -= 2;
             break;
@@ -126,7 +125,6 @@ void Chip8::emulateCycle() {
 
         case 0x2000:
             // 2nnn CALL addr
-            nnn = opcode_ & 0x0FFF;
             stack_.push(pc_);
             pc_ = nnn;
             pc_ -= 2;
@@ -142,10 +140,14 @@ void Chip8::emulateCycle() {
                 
         case 0x4000:
             // 4xkk SNE Vx, byte
+            if (V_[x] != kk)
+                pc_ += 2;
             break;
                 
         case 0x5000:
             // 5xy0 SE Vx, Vy
+            if (V_[x] == V_[y])
+                pc_ += 2;
             break;
                 
         case 0x6000:
