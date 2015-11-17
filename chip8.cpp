@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include <fstream>
 #include "chip8.h"
 
@@ -84,12 +86,12 @@ void Chip8::loadRom(const std::string& fileName) {
 // Take an opcode and run it (Emul8)
 void Chip8::emulateCycle() {
     opcode_ = memory_[pc_] << 8 | memory_[pc_ + 1];
+
     /* nnn is the address in an opcode
      * x and y are values the correspond with V
      * Ex: x = 1, so Vx is V1
      * kk is a value inside opcode
      * a single n is a nibble */
-
     uint16_t nnn = opcode_ & 0x0FFF;
     uint16_t x = (opcode_ & 0x0F00) >> 8;
     uint16_t y = (opcode_ & 0x00F0) >> 4;
@@ -169,33 +171,49 @@ void Chip8::emulateCycle() {
 
                 case 0x0001:
                     // 8xy1 OR Vx, Vy
-                    V_[x] = V_[x] | V_[y];
+                    V_[x] |= V_[y];
                     break;
 
                 case 0x0002:
                     // 8xy2 AND Vx, Vy
-                    V_[x] = V_[x] & V_[y];
+                    V_[x] &= V_[y];
                     break;
 
                 case 0x0003:
                     // 8xy3 XOR Vx, Vy
-                    V_[x] = V_[x] ^ V_[y];
+                    V_[x] ^= V_[y];
                     break;
 
                 case 0x0004:
                     // 8xy4 ADD Vx, By
+                    if ((V_[x] + V_[y]) > 0xFF) // Set carry if value is > 255
+                        V_[0xF] = 1;
+                    else
+                        V_[0xF] = 0;
+                    V_[x] += V_[y];
                     break;
 
                 case 0x0005:
                     // 8xy5 SUB Vx, Vy
+                    if (V_[y] > V_[x])
+                        V_[0xF] = 1;
+                    else
+                        V_[0xF] = 0;
+                    V_[x] -= V_[y];
                     break;
 
                 case 0x0006:
                     // 8xy6 SHR Vx {, Vy}
+
                     break;
 
                 case 0x0007:
                     // 8xy7 SUBN Vx, Vy
+                    if (V_[y] > V_[x])
+                        V_[0xF] = 1;
+                    else
+                        V_[0xF] = 0;
+                    V_[x] = V_[y] - V_[x];
                     break;
 
                 case 0x000E:
@@ -210,18 +228,24 @@ void Chip8::emulateCycle() {
 
         case 0x9000:
             // 9xy0 SNE Vx, Vy
+            if (V_[x] != V_[y])
+                pc_ += 2;
             break;
 
         case 0xA000:
             // Annn LD I, addr
+            I_ = nnn;
             break;
 
         case 0xB000:
             // Bnnn JP V0, addr
+            pc_ = nnn + V_[0];
             break;
 
         case 0xC000:
             // Cxkk RND Vx, byte
+            srand((unsigned)time(0));
+            V_[x] = (rand() % 0x100) & kk; // Mod by 256 to get 0-255
             break;
 
         case 0xD000:
@@ -248,6 +272,7 @@ void Chip8::emulateCycle() {
             switch (opcode_ & 0x00FF) {
                 case 0x0007:
                     // Fx07 LD Vx, DT
+                    V_[x] = delayTimer_;
                     break;
 
                 case 0x000A:
@@ -256,14 +281,17 @@ void Chip8::emulateCycle() {
 
                 case 0x0015:
                     // Fx15 LD DT, Vx
+                    delayTimer_ = V_[x];
                     break;
 
                 case 0x0018:
                     // Fx18 LD ST, Vx
+                    soundTimer_ = V_[x];
                     break;
 
                 case 0x001E:
                     // Fx1E ADD I, Vx
+                    I_ += V_[x];
                     break;
 
                 case 0x0029:
@@ -276,10 +304,14 @@ void Chip8::emulateCycle() {
 
                 case 0x0055:
                     // Fx55 LD [I], Vx
+                    for (int i = 0; i <= x; ++i)
+                        memory_[I_ + i] = V_[i];
                     break;
 
                 case 0x0065:
                     // Fx65 LD Vx, [I]
+                    for (int i = 0; i <= x; ++i)
+                        V_[i] = memory_[I_ + i];
                     break;
 
                 default:
@@ -293,5 +325,8 @@ void Chip8::emulateCycle() {
             std::cerr << "OPCODE: " << std::hex << opcode_ << std::dec << "\n";
     }
 
+    // Move program counter forward, go to next opcode
     pc_ += 2;
+
+    // Update timers
 }
