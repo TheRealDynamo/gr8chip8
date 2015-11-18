@@ -34,6 +34,9 @@ public:
 
     void loadRom(const std::string& path);
     void emulateCycle();
+    uint8_t getDrawFlag() {
+        return drawFlag_;
+    }
 
     Chip8();
 private:

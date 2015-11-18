@@ -2,10 +2,14 @@
 #include "chip8.h"
 
 int main(int argc, char *argv[]) {
-    int a = 327;
-    std::cout << a % 10 << "\n";
-    std::cout << (a % 100) / 10 << "\n";
-    std::cout << (a % 1000) / 100 << "\n";
+    Chip8 chip;
+
+    while(1) {
+        chip.emulateCycle();
+        if (chip.getDrawFlag()) {
+
+        }
+    }
 
     return 0;
 }
