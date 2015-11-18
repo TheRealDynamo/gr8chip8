@@ -2,16 +2,10 @@
 #include "chip8.h"
 
 int main(int argc, char *argv[]) {
-    Chip8Stack s;
-    Chip8 chip;
-
-    s.push(10);
-    std::cout << *(s.sp) << "\n";
-    s.push(12);
-    s.push(1323);
-    std::cout << *(s.sp) << "\n";
-    s.pop();
-    std::cout << *(s.sp) << "\n";
+    int a = 327;
+    std::cout << a % 10 << "\n";
+    std::cout << (a % 100) / 10 << "\n";
+    std::cout << (a % 1000) / 100 << "\n";
 
     return 0;
 }

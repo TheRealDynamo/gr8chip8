@@ -300,6 +300,10 @@ void Chip8::emulateCycle() {
 
                 case 0x0033:
                     // Fx33 LD B, Vx
+                    // Breaks x into digits and stores them into memory
+                    memory_[I_ + 2] = (x % 10); // Load ones place
+                    memory_[I_ + 1] = (x % 100) / 10; // Load tens place
+                    memory_[I_] = (x % 1000) / 100; // Load hundreds place
                     break;
 
                 case 0x0055:
