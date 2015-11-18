@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     std::cout << *(s.sp) << "\n";
     s.push(12);
     s.push(1323);
-    std::cout << *(s.sp) << "\n";
+    std::cout << s.top() << "\n";
     s.pop();
     std::cout << *(s.sp) << "\n";
 
