@@ -1,11 +1,12 @@
-cmake_minimum_required(VERSION 3.3)
-project(gr8chip8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.3)
+PROJECT(gr8chip8)
+SET(EXEPROJECT gr8chip8)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES
+SET(SOURCE_FILES
     chip8.cpp
     chip8.h
     main.cpp)
 
-add_executable(gr8chip8 ${SOURCE_FILES})
+add_executable(${EXEPROJECT} ${SOURCE_FILES})

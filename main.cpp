@@ -2,7 +2,7 @@
 #include "chip8.h"
 
 int main(int argc, char *argv[]) {
-    Chip8 chip;
+   /* Chip8 chip;
 
     while(1) {
         chip.emulateCycle();
@@ -10,6 +10,6 @@ int main(int argc, char *argv[]) {
 
         }
     }
-
+*/
     return 0;
 }
