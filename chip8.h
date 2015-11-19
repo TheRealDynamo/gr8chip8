@@ -34,6 +34,9 @@ public:
 
     void loadRom(const std::string& path);
     void emulateCycle();
+    uint8_t getDrawFlag() {
+        return drawFlag_;
+    }
 
     Chip8();
 private:
@@ -51,6 +54,7 @@ private:
     // Timer registers that count at 60hz
     uint8_t delayTimer_;
     uint8_t soundTimer_;
+    uint8_t drawFlag_;
     // Stack to remember location before jump
     Chip8Stack stack_;
     // Current state of Hex Keypad (0x0 to 0xF)
