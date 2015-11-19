@@ -83,7 +83,7 @@ void Chip8::loadRom(const std::string& fileName) {
 
 }
 
-// Take an opcode and run it (Emul8)
+// Take an opcode and run it
 void Chip8::emulateCycle() {
     opcode_ = memory_[pc_] << 8 | memory_[pc_ + 1];
 
